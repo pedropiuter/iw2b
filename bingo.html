@@ -100,6 +100,10 @@
 </tr></tbody>
 </tr></tbody>
 </table>
+
+<button onclick="GerarCartela()">
+    Gerar Cartela
+ </button>
  
     <script type="text/javascript">
         var cartelaB = [];//1 a 15
@@ -153,6 +157,15 @@
  
         }
 
+    }
+
+    function GerarCartela()
+    {
+        for(var i = 1;i<=5; i++ )
+        {
+            var td = document.getElementById("g"+i)
+            td.innerText = cartelaG[i]
+        }
     }
 </script>
 </div>

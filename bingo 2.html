@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Simples</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: rgb(0, 0, 0);
+            color: white;
+           
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            width: 60px;
+            height: 60px;
+            font-size: 20px;
+            text-align: center;
+            background: white;
+            color: black;
+        }
+
+        th {
+            background-color: rgb(0, 174, 255);
+        }
+
+        .marked {
+            background-color: rgb(148, 191, 248) !important;
+            color: white;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+           
+            cursor: pointer;
+        }
+
+        #numeros-sorteados {
+            margin-top: 20px;
+        }
+
+        #numeros-sorteados span {
+           
+            width: 40px;
+            height: 40px;
+            color: rgb(255, 255, 255);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>bingo dos crias de bh</h1>
+
+    <table id="cartela">
+        <thead>
+            <tr>
+                <th>B</th><th>I</th><th>N</th><th>G</th><th>O</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <button onclick="gerarCartela()">Gerar Nova Cartela</button>
+    <button onclick="sortearNumero()">Sortear Número</button>
+
+    <h3 id="ultimo-sorteado">Número sorteado: -</h3>
+
+    <div id="numeros-sorteados">
+        <h3>Números Sorteados:</h3>
+        <div id="lista-sorteados"></div>
+    </div>
+
+    <script>
+        
+        let todosNumeros = Array.from({ length: 75 }, (_, i) => i + 1);
+
+       
+        function embaralharArray() {
+            for (let i = todosNumeros.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [todosNumeros[i], todosNumeros[j]] = [todosNumeros[j], todosNumeros[i]]; // Troca os elementos
+            }
+        }
+
+       
+        function gerarCartela() {
+            const tbody = document.querySelector("#cartela tbody");
+            tbody.innerHTML = "";  
+
+            const colunas = {
+                B: [1, 15],
+                I: [16, 30],
+                N: [31, 45],
+                G: [46, 60],
+                O: [61, 75]
+            };
+
+           
+            for (let i = 0; i < 5; i++) {
+                const row = document.createElement("tr");
+
+              
+                ["B", "I", "N", "G", "O"].forEach(coluna => {
+                    const cell = document.createElement("td");
+                    const [min, max] = colunas[coluna];
+                    const numero = Math.floor(Math.random() * (max - min + 1)) + min;
+                    cell.textContent = numero;
+                    row.appendChild(cell);
+                });
+
+                tbody.appendChild(row);
+            }
+        }
+
+       
+        function sortearNumero() {
+            if (todosNumeros.length === 0) {
+                alert("Todos os números já foram sorteados!");
+                return;
+            }
+
+            
+            const numero = todosNumeros.pop();
+            document.getElementById("ultimo-sorteado").textContent = `Número sorteado: ${numero}`;
+
+            
+            const cells = document.querySelectorAll("#cartela td");
+            cells.forEach(cell => {
+                if (parseInt(cell.textContent) === numero) {
+                    cell.classList.add("marked");
+                }
+            });
+
+            
+            const span = document.createElement("span");
+            span.textContent = numero;
+            document.getElementById("lista-sorteados").appendChild(span);
+        }
+
+    
+        gerarCartela();
+    </script>
+
+</body>
+</html>
+
